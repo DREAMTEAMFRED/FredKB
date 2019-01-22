@@ -53,8 +53,7 @@ namespace FredKB
                 var jsonResponse = response.Content.ReadAsStringAsync().Result;
 
                 // Output JSON response
-                //Console.WriteLine(jsonResponse);
-
+                // Parse json response
                 JsonObject jsonDoc = (JsonObject)JsonValue.Parse(jsonResponse);
                 JsonArray jsonArray = (JsonArray)jsonDoc["answers"];
 
