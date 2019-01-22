@@ -26,11 +26,14 @@ namespace FredKB
             string route = "/knowledgebases/85e578a7-bf44-4f12-b46e-26efa40b1653/generateAnswer";
 
             string quest = Console.ReadLine();
+            quest = quest.Replace("'", "");
 
             // JSON format for passing question to service
             string question = @"{'question': '" + quest + "','top': 1}";
 
             string answer = "";
+            double rating;
+            //int scores;
 
             // Create http client
             using (var client = new HttpClient())
@@ -55,14 +58,31 @@ namespace FredKB
                 // Output JSON response
                 // Parse json response
                 JsonObject jsonDoc = (JsonObject)JsonValue.Parse(jsonResponse);
-                JsonArray jsonArray = (JsonArray)jsonDoc["answers"];
-
-                foreach (JsonObject obj in jsonArray)
+                try
                 {
-                    obj.TryGetValue("answer", out JsonValue result);
-                    answer = result.ToString();
+                    JsonArray jsonArray = (JsonArray)jsonDoc["answers"];
+
+                    foreach (JsonObject obj in jsonArray)
+                    {
+                        obj.TryGetValue("answer", out JsonValue result);
+                        obj.TryGetValue("score", out JsonValue score);
+                        rating = Convert.ToDouble(score.ToString());
+                        if(rating > 90.0)
+                        {
+                            answer = result.ToString();
+                        }
+                        else
+                        {
+                            answer = "";
+                        }
+                    }
+                    Console.WriteLine(answer.Replace("\"", ""));
                 }
-                Console.WriteLine(answer.Replace("\"", ""));
+                catch
+                {
+                    answer = "";
+                    Console.WriteLine(answer.Replace("\"", ""));
+                }
 
                 Console.ReadLine();
             }
