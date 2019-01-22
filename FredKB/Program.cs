@@ -18,7 +18,7 @@ namespace FredKB
 
             // Authorization endpoint key
             // From Publish Page
-            string endpoint_key = "9ed8e55e-e00b-4f2e-a4cf-87098d19c2a6";
+            string endpoint_key = Environment.GetEnvironmentVariable("azure_KB_key", EnvironmentVariableTarget.User);
 
             // Management APIs postpend the version to the route
             // From Publish Page, value after POST
@@ -60,9 +60,8 @@ namespace FredKB
 
                 foreach (JsonObject obj in jsonArray)
                 {
-                    JsonValue text;
-                    obj.TryGetValue("answer", out text);
-                    answer = text.ToString();
+                    obj.TryGetValue("answer", out JsonValue result);
+                    answer = result.ToString();
                 }
                 Console.WriteLine(answer.Replace("\"", ""));
 
