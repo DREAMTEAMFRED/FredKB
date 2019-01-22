@@ -6,7 +6,7 @@ using System.Text;
 
 namespace FredKB
 {
-    class Program
+    class ProgramKB
     {
         static void Main(string[] args)
         {
